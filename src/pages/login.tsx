@@ -23,7 +23,7 @@ const LoginPage: React.FC = () => {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setError('');
-
+  
     try {
       if (isLogin) {
         await auth.signInWithEmailAndPassword(email, password);
@@ -31,10 +31,10 @@ const LoginPage: React.FC = () => {
         await auth.createUserWithEmailAndPassword(email, password);
       }
       router.push('/');
-    } catch (err) {
-      throw { message: err.message } as LoginError;
-    }  
-  };
+    } catch (err: unknown) {
+      throw { message: (err as Error).message } as unknown;
+    }
+  };  
 
   const handleToggleAuth = () => {
     setIsLogin((prevValue) => !prevValue);
