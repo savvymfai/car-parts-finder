@@ -17,7 +17,7 @@
     "cors-anywhere": "^0.4.4",
     "eslint": "8.37.0",
     "eslint-config-next": "13.2.4",
-    "firebase": "^9.0.0",
+    "firebase": "^9.19.1",
     "firebase-auth": "^0.1.2",
     "fuse.js": "^6.6.2",
     "next": "13.2.4",
@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",
-    "@types/firebase": "^9.0.0"
+    "@types/firebase": "^3.2.1"
   },
   "eslintConfig": {
     "extends": "next",
