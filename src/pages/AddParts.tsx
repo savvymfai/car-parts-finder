@@ -3,7 +3,7 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/database';
 
-interface CarPart {
+type CarPart = {
   id: string;
   name: string;
   description: string;
@@ -39,7 +39,7 @@ const AddRemoveCarPartsPage: React.FC = () => {
     };
     fetchCarParts();
     
-    const unsubscribe = firebase.auth().onAuthStateChanged((user: firebase.User | null) => {
+    const unsubscribe = firebase.auth().onAuthStateChanged((user: FirebaseUser) => {
       if (user) {
         setUser(user);
       } else {
@@ -61,7 +61,8 @@ const AddRemoveCarPartsPage: React.FC = () => {
     const db = firebase.database();
     const carPartsRef = db.ref('carParts');
     const newCarPartRef = carPartsRef.push();
-    await newCarPartRef.set(newCarPart);\n    setCarParts((prevState) => [...prevState, { ...newCarPart, id: newCarPartRef.key! }]);
+    await newCarPartRef.set(newCarPart);
+    setCarParts((prevState) => [...prevState, { ...newCarPart, id: newCarPartRef.key! }]);
     setNewCarPart({ id: '', name: '', description: '' });
   };
 
@@ -88,8 +89,7 @@ const AddRemoveCarPartsPage: React.FC = () => {
             </div>
             <button type="submit">Add Car Part</button>
           </form>
-          <ul>
-            {carParts.map((carPart) => (
+          <ul>\n            {carParts.map((carPart) => (
               <li key={carPart.id}>
                 <h2>{carPart.name}</h2>
                 <p>{carPart.description}</p>
