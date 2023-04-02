@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { auth } from '../firebase/firebaseConfig';
+import LoginError from './types/LoginErrors';
+
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -30,8 +32,8 @@ const LoginPage: React.FC = () => {
       }
       router.push('/');
     } catch (err) {
-      setError(err.message);
-    }
+      throw { message: err.message } as LoginError;
+    }  
   };
 
   const handleToggleAuth = () => {
