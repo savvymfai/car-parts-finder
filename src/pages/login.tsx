@@ -45,10 +45,11 @@ const LoginPage: React.FC = () => {
       await auth.signOut();
       setLoggedIn(false);
       router.push('/login');
-    } catch (err) {
-      setError(err.message);
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      setError(errorMessage);
     }
-  };
+  };  
 
   return (
     <div>
