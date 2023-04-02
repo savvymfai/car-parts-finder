@@ -88,4 +88,4 @@ const AddRemoveCarPartsPage: React.FC = () => {
   );
 };
 
-export default AddRemoveCar
+export default AddRemoveCarPartsPage;
