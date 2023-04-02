@@ -1,6 +1,6 @@
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/auth';
-import 'firebase/compat/firestore';
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAbgkEx5-XXkStn7IMHLTyQKxY-9GwWzd4",
@@ -11,10 +11,8 @@ const firebaseConfig = {
   appId: "1:771209660481:web:f3fa6bcd3f6bf008af1ec0"
 };
 
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-}
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-export const auth = firebase.auth();
-export const firestore = firebase.firestore();
-
+export { auth, db };
