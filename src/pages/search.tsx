@@ -44,7 +44,7 @@ const SearchPage: React.FC = () => {
           </li>
         ))}
       </ul>
-      <h2>O'Reilly Auto Parts</h2>
+      <h2>O&rsquo;Reilly Auto Parts</h2>
       <ul>
         {results.oReilly.map((part, index) => (
           <li key={index}>
