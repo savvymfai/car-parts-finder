@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import firebase from 'firebase/app';
-import 'firebase/database';
 import 'firebase/auth';
+import 'firebase/database';
 
 interface CarPart {
   id: string;
@@ -12,7 +12,8 @@ interface CarPart {
 const AddRemoveCarPartsPage: React.FC = () => {
   const [carParts, setCarParts] = useState<CarPart[]>([]);
   const [newCarPart, setNewCarPart] = useState<CarPart>({ id: '', name: '', description: '' });
-  const [user, setUser] = useState<firebase.User | null>(null);
+  type FirebaseUser = firebase.User | null;
+  const [user, setUser] = useState<FirebaseUser>(null);
 
   useEffect(() => {
     const fetchCarParts = async () => {
@@ -24,7 +25,7 @@ const AddRemoveCarPartsPage: React.FC = () => {
       setCarParts(carPartsArray);
     };
     fetchCarParts();
-
+    
     const unsubscribe = firebase.auth().onAuthStateChanged((user: firebase.User | null) => {
       if (user) {
         setUser(user);
@@ -32,8 +33,10 @@ const AddRemoveCarPartsPage: React.FC = () => {
         setUser(null);
       }
     });
-
-    return unsubscribe;
+    
+    return () => {
+      unsubscribe();
+    }
   }, []);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -57,33 +60,35 @@ const AddRemoveCarPartsPage: React.FC = () => {
     setCarParts((prevState) => prevState.filter((carPart) => carPart.id !== carPartId));
   };
 
-  if (!user) {
-    return <p>You must be logged in to access this page.</p>;
-  }
-
   return (
     <div>
-      <h1>Add/Remove Car Parts</h1>
-      <form onSubmit={(event) => { event.preventDefault(); handleAddCarPart(); }}>
-        <div>
-          <label htmlFor="name">Name:</label>
-          <input type="text" id="name" name="name" value={newCarPart.name} onChange={handleInputChange} />
-        </div>
-        <div>
-          <label htmlFor="description">Description:</label>
-          <textarea id="description" name="description" value={newCarPart.description} onChange={handleInputChange} />
-        </div>
-        <button type="submit">Add Car Part</button>
-      </form>
-      <ul>
-        {carParts.map((carPart) => (
-          <li key={carPart.id}>
-            <h2>{carPart.name}</h2>
-            <p>{carPart.description}</p>
-            <button onClick={() => handleRemoveCarPart(carPart.id)}>Remove Car Part</button>
-          </li>
-        ))}
-      </ul>
+      {user ? (
+        <>
+          <h1>Add/Remove Car Parts</h1>
+          <form onSubmit={(event) => { event.preventDefault(); handleAddCarPart(); }}>
+            <div>
+              <label htmlFor="name">Name:</label>
+              <input type="text" id="name" name="name" value={newCarPart.name} onChange={handleInputChange} />
+            </div>
+            <div>
+              <label htmlFor="description">Description:</label>
+              <textarea id="description" name="description" value={newCarPart.description} onChange={handleInputChange} />
+            </div>
+            <button type="submit">Add Car Part</button>
+          </form>
+          <ul>
+            {carParts.map((carPart) => (
+              <li key={carPart.id}>
+                <h2>{carPart.name}</h2>
+                <p>{carPart.description}</p>
+                <button onClick={() => handleRemoveCarPart(carPart.id)}>Remove Car Part</button>
+              </li>
+            ))}
+          </ul>
+        </>
+      ) : (
+        <p>You must be logged in to access this page.</p>
+      )}
     </div>
   );
 };
