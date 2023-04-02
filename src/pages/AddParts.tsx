@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import firebase from 'firebase/app';
 import 'firebase/database';
 import 'firebase/auth';
-import type { User } from 'firebase/auth';
 
 interface CarPart {
   id: string;
@@ -13,8 +12,8 @@ interface CarPart {
 const AddRemoveCarPartsPage: React.FC = () => {
   const [carParts, setCarParts] = useState<CarPart[]>([]);
   const [newCarPart, setNewCarPart] = useState<CarPart>({ id: '', name: '', description: '' });
-  const [user, setUser] = useState<User | null>(null);
-  
+  const [user, setUser] = useState<firebase.User | null>(null);
+
   useEffect(() => {
     const fetchCarParts = async () => {
       const db = firebase.database();
@@ -26,7 +25,7 @@ const AddRemoveCarPartsPage: React.FC = () => {
     };
     fetchCarParts();
 
-    const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+    const unsubscribe = firebase.auth().onAuthStateChanged((user: firebase.User | null) => {
       if (user) {
         setUser(user);
       } else {
