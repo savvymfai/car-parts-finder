@@ -20,6 +20,11 @@ const Header: React.FC = () => (
           Search
         </a>
       </Link>
+      <Link href="/portfolio">
+        <a style={{ color: "#fff", textDecoration: "none", fontSize: "1.2rem" }}>
+          Portfolio
+        </a>
+      </Link>
       <Link href="/login">
         <a style={{ color: "#fff", textDecoration: "none", fontSize: "1.2rem" }}>
           Login
